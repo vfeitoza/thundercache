@@ -1,0 +1,115 @@
+#!/bin/sh
+#
+#
+####
+# This init-script tries to be LSB conform but platform independent.
+# 
+# Therefore check the following two variables to fit to your requests:
+# Thunder_BIN Thunder_CONFIG PIDFILE
+# Any configuration of Thunder is done in thunder.conf
+# Type thunder --help for help and read thunder.conf you should have received.
+
+Thunder_BIN=/usr/local/sbin/thunder
+Thunder_CONFIG=/etc/thunder/thunder.conf
+PIDFILE=/var/run/thunder/thunder.pid
+# Return values acc. to LSB for all commands but status:
+# 1       generic or unspecified error (current practice)
+# 2       invalid or excess argument(s)
+# 3       unimplemented feature (for example, "reload")
+# 4       user had insufficient privilege
+# 5       program is not installed
+# 6       program is not configured
+# 7       program is not running
+# 8-99    reserved for future LSB use
+# 100-149 reserved for distribution use
+# 150-199 reserved for application use
+# 200-254 reserved
+# Note that starting an already running service, stopping
+# or restarting a not-running service as well as the restart
+# with force-reload (in case signaling is not supported) are
+# considered a success.
+
+reload_thunder()
+{
+	echo "Reloading Thunder ..."
+	if test ! -d $(dirname $PIDFILE); then
+		mkdir $(dirname $PIDFILE)
+	fi
+	PID="`cat $PIDFILE`"
+	if [ "$PID" != "" ]; then
+		kill -HUP "$PID" >/dev/null 2>&1
+		if [ $? -ne 0 ]; then
+			echo "Error: Thunder not running"
+			exit 1
+		fi
+	else
+		echo "Error: Thunder not running or PIDFILE not readable"
+		exit 1
+	fi
+	exit 0
+}
+
+case "$1" in
+	start)
+		echo "Starting Thunder ..."
+		if [ ! -f $Thunder_BIN ]; then
+			echo "Error: $Thunder_BIN not found"
+			exit 5
+		fi
+		$Thunder_BIN -c $Thunder_CONFIG
+		exit $?
+		;;
+
+	stop)
+		echo "Shutting down Thunder ..."
+		if [ ! -f "$PIDFILE" ]; then
+		  echo "Error: Thunder not running or PIDFILE unreadable"
+		  exit 1
+		fi
+		if test ! -d $(dirname $PIDFILE); then
+			mkdir $(dirname $PIDFILE)
+		fi
+		PID="`cat $PIDFILE`"
+		if [ "$PID" != "" ]; then
+			kill -TERM "$PID" >/dev/null 2>&1
+			if [ $? -ne 0 ]; then
+				echo "Error: Thunder not running"
+				exit 1
+			fi
+		else
+			echo "Error: Thunder not running or PIDFILE unreadable"
+			exit 1
+		fi
+		sleep 2
+		exit 0
+		;;
+
+	restart)
+		echo "Shutting down Thunder ..."
+		$0 stop >/dev/null 2>&1
+		$0 start
+		exit $?
+		;;
+
+	reload-lists)
+		reload_thunder
+		;;
+
+	force-reload)
+		reload_thunder
+		;;
+
+	reload)
+		reload_thunder
+		;;
+
+	status)
+		echo "Checking for service Thunder ..."
+		exit 4
+		;;
+
+	*)
+		echo "Usage: $0 {start|stop|restart|force-reload|reload|reload-lists}"
+		exit 0
+		;;
+esac
