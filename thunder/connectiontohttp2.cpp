@@ -110,7 +110,7 @@ void ConnectionToHTTP2::Cache() {
 
         }
     } else if (!rewrited) { // sistema de cache de arquivos estáticos GENERAL
-        if (Params::GetConfigInt(getFileExtension(getFileName(request)) + "_EXP") > 0 && request.find_first_not_of("()[]?&=;,´`'\"") == string::npos) { // se está configurada essa extensão
+        if (Params::GetConfigInt(getFileExtension(getFileName(request)) + "_EXP") > 0 && request.find_first_not_of("()[]?&=;,´`'\"") != string::npos) { // se está configurada essa extensão
             r.file = getFileName(request);
             r.domain = domaintmp;
             subdir = request.substr(1, request.length() - r.file.length() - 2);
