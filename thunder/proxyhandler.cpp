@@ -42,13 +42,7 @@ void ProxyHandler::Proxy( SocketHandler &ProxyServerT )
 
             ServerConnected = BrowserDropped = DropBrowser = false;
             alivecount = 0;
-
-            //Wait for new connection
-            //while ( ProxyServerT.AcceptClient( ToBrowser ) == false ) sleep(10);
-
-			// now out of this process, free memory
-			break;
-        } 
+        }
 
         if ( ++alivecount > 1 )
         {
