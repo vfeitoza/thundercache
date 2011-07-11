@@ -174,7 +174,7 @@ void ProxyHandler::Proxy( SocketHandler &ProxyServerT )
     ToBrowser.Close();
 
     //Exit process
-    //exit(1);
+    exit(1);
 }
 
 
