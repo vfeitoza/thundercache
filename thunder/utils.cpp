@@ -1,8 +1,6 @@
 #include "utils.h"
 #include "params.h"
 
-#include "curl/curl.h"
-
 #include <ctype.h>
 #include <signal.h>
 #include <errno.h>
