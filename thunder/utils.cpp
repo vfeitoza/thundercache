@@ -249,93 +249,14 @@ string url2request(string &url) {
 string ConvertChar(string lineT) {
     string line = "";
     for (unsigned int i = 0; i < lineT.length(); i++) {
-        switch (lineT[i]) {
-            case 'a':
-                line += "1";
-                break;
-            case 'b':
-                line += "2";
-                break;
-            case 'c':
-                line += "3";
-                break;
-            case 'd':
-                line += "4";
-                break;
-            case 'e':
-                line += "5";
-                break;
-            case 'f':
-                line += "6";
-                break;
-            case 'g':
-                line += "7";
-                break;
-            case 'h':
-                line += "8";
-                break;
-            case 'i':
-                line += "9";
-                break;
-            case 'j':
-                line += "10";
-                break;
-            case 'k':
-                line += "11";
-                break;
-            case 'l':
-                line += "12";
-                break;
-            case 'm':
-                line += "13";
-                break;
-            case 'n':
-                line += "14";
-                break;
-            case 'o':
-                line += "15";
-                break;
-            case 'p':
-                line += "16";
-                break;
-            case 'q':
-                line += "17";
-                break;
-            case 'r':
-                line += "18";
-                break;
-            case 's':
-                line += "19";
-                break;
-            case 't':
-                line += "20";
-                break;
-            case 'u':
-                line += "21";
-                break;
-            case 'v':
-                line += "22";
-                break;
-            case 'w':
-                line += "23";
-                break;
-            case 'x':
-                line += "24";
-                break;
-            case 'y':
-                line += "25";
-                break;
-            case 'z':
-                line += "26";
-                break;
-            default:
-                if (isdigit(lineT[i]))
-                    line += lineT[i];
-                else
-                    line += "27";
-                break;
-
-        }
+	int caracter = lineT[i];
+	if( caracter < 123 && caracter > 96 )
+		line += itoa(caracter - 96);
+	else 
+		if (isdigit(lineT[i]))
+			line += lineT[i];
+		else
+			line += "27";
     }
 
     unsigned long resultado = 0;
@@ -346,7 +267,8 @@ string ConvertChar(string lineT) {
     for (unsigned int fff = 3; fff < line.length(); fff += 3) {
         tempstr = line.substr(0, fff);
         resultado += atoi(tempstr.c_str());
-        line = line.substr(fff + 1);
+        line = line.substr(fff);
+		fff = 0;
     }
 
     tempstr = itoa(resultado);
