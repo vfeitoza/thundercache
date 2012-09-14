@@ -27,7 +27,7 @@ http.*\.viddler\.com.*\.flv
 http.*\.video\.msn\.com.*\.flv
 http.*\.vimeo\.com.*\.flv
 http.*\.xtube\.com.*\.flv
-http.*\.xvideos\.com.*\.flv
+http.*(porn|img).*\.xvideos\.com\/videos\/(thumbs\/)?.*(\.jpg|\.flv\?.*|\.mp4\?.*)$
 http.*\.youtube\.com.*videoplayback
 http.*\.ziddu\.com.*(\.exe|\.iso|\.torrent|\.zip|\.rar|\.pdf|\.doc|\.tar|\.mp3|\.mp4|\.avi|\.wmv)
 http.*\.google\.com.*(search\?|cse\?)
