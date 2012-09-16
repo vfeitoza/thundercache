@@ -7,31 +7,33 @@
 // g++ -I. -fPIC -shared -g -o xvideos.com.so xvideos.com.cpp
 
 string get_filename(string url) {
-		vector<string> resultado;
-		if (url.find("?") != string::npos) {
-			stringexplode(url, "?", &resultado);
-			stringexplode(resultado.at(resultado.size()-2), "/", &resultado);
-			return resultado.at(resultado.size()-1);           
-		} else {
-			stringexplode(url, "/", &resultado);
-			return resultado.at(resultado.size()-1);
-		}
+	vector<string> resultado;
+	string::size_type pos;
+	string tmp;
+	
+	stringexplode(url,"/",&resultado);
+	url = resultado.at(resultado.size() - 1);
+	resultado.clear();
+	
+	if (url.find("?") != string::npos) {
+		stringexplode(url, "?", &resultado);
+		url = resultado.at(0);
+		if( (pos = url.find(";")) != string::npos )
+			url.erase(pos);
+		return url;
+	} else {
+		if( (pos = url.find(";")) != string::npos )
+			url.erase(pos);
+		return url;
+	}
 }
 
 extern "C" resposta getmatch(const string url) {
-    resposta r;	
-
-	if ( (url.find(".xvideos.com/") != string::npos)  and
-	     (	 (url.find(".flv") != string::npos) or (url.find(".mp4") != string::npos) )
-	) {
-		
-	    r.file = get_filename(url);
-		if (!r.file.empty()) {
-			r.match = true;
-			r.domain = "xvideos";
-		} else {
-			r.match = false;
-		}
+	resposta r;	
+	r.file = get_filename(url);
+	if ( !r.file.empty() ) {
+		r.match = true;
+		r.domain = "xvideos";
 	} else {
 		r.match = false;
 	}
