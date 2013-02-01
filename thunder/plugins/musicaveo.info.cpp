@@ -9,12 +9,12 @@
 #include <cstring>
 #include <vector>
 #include "../utils.cpp"
- 
+
 // use this line to compile
-// g++ -I. -fPIC -shared -g -o edgecastcdn.net.so edgecastcdn.net.cpp
+// g++ -I. -fPIC -shared -g -o musicaveo.info.so musicaveo.info.cpp
 // regex
-// http.*\.edgecastcdn\.net.*(\.jpg|\.png|\.swf|\.mp3)
- 
+// http.*musicaveo\.info.*(\.swf|\.mp3)
+
 string get_filename(string url) {
                 vector<string> resultado;
                 if (url.find("?") != string::npos) {
@@ -30,13 +30,13 @@ string get_filename(string url) {
 extern "C" resposta getmatch(const string url) {
     resposta r; 
  
-        if ( (url.find(".edgecastcdn.net") != string::npos) and (url.find(".jpg") != string::npos) or (url.find(".png") != string::npos) or (url.find(".swf") != string::npos) or (url.find(".mp3") != string::npos))
-        {
+        if ( (url.find("musicaveo.info") != string::npos)
+        ) {
                 
             r.file = get_filename(url);
                 if (!r.file.empty()) {
                         r.match = true;
-                        r.domain = "GAMESF_edgecastcdn";
+                        r.domain = "musicaveo.info";
                 } else {
                         r.match = false;
                 }
